@@ -1,0 +1,362 @@
+/* 禅チャット - デザインシステム CSS */
+
+:root {
+  /* 純粋白 - 最も開放的な背景色 */
+  --zen-white: #ffffff;
+
+  /* 禅グレー - 落ち着きと安定感のグラデーション */
+  --zen-gray-25: #fcfcfd;
+  --zen-gray-50: #f8f9fa;
+  --zen-gray-100: #f1f3f4;
+  --zen-gray-200: #e8eaed;
+  --zen-gray-300: #dadce0;
+  --zen-gray-400: #bdc1c6;
+  --zen-gray-500: #9aa0a6;
+  --zen-gray-600: #80868b;
+  --zen-gray-700: #5f6368;
+  --zen-gray-800: #3c4043;
+  --zen-gray-900: #202124;
+
+  /* フォントファミリー */
+  --font-primary: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Source Serif Pro', 'Noto Serif JP', serif;
+
+  /* タイポグラフィスケール */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+
+  /* 行間 */
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* 圧迫感ゼロのスペーシング */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-6: 3rem;
+  --space-8: 4rem;
+  --space-12: 6rem;
+
+  /* 集中のための特別スペーシング */
+  --breathing-space: 6rem;
+  --zen-padding: 3rem;
+  
+  /* 🧠 認知科学的最適行長 */
+  --optimal-line-length: 30em;  /* 日本語30文字 ≈ 最適読解幅 */
+}
+
+/* 動きの軽減 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ベースリセット */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--zen-gray-700);
+  background: var(--zen-gray-25);
+  overflow: hidden;
+}
+
+/* 禅アニメーション */
+@keyframes zen-fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(8px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes zen-slide-in {
+  from { 
+    opacity: 0;
+    transform: translateX(-12px); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0); 
+  }
+}
+
+@keyframes zen-pulse {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8; 
+    transform: scale(1.1);
+  }
+}
+
+/* 全画面時の基本レイアウト */
+.zen-app {
+  height: 100vh;
+  width: 100vw;
+  background: var(--zen-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* 集中モード */
+.zen-app--focus-mode {
+  background: var(--zen-gray-50);
+}
+
+/* メインコンテナ */
+.zen-container {
+  max-width: 600px;
+  width: 90%;
+  height: 92vh;
+  display: flex;
+  flex-direction: column;
+  margin: var(--space-8) auto;
+  padding: var(--space-4);
+}
+
+/* チャットウィンドウ */
+.zen-chat-window {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  overflow: hidden;  /* 外側のスクロールを防止 */
+}
+
+/* メッセージラッパー - フェード効果用 */
+.zen-messages-wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;  /* フレックス子要素の縮小を可能にする */
+}
+
+.zen-messages-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  padding-block: calc(24px + 1vh);
+  padding-inline: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.zen-messages-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 上部フェード効果 */
+.zen-fade-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: linear-gradient(
+    to bottom,
+    var(--zen-gray-50) 0%,
+    var(--zen-gray-50) 30%,
+    rgba(248, 249, 250, 0.4) 70%,
+    transparent 100%
+  );
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* 下部フェード効果 */
+.zen-fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: linear-gradient(
+    to top,
+    var(--zen-gray-50) 0%,
+    var(--zen-gray-50) 30%,
+    rgba(248, 249, 250, 0.4) 70%,
+    transparent 100%
+  );
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* メッセージバブル - 最終完璧版 */
+.zen-message-bubble {
+  background: var(--zen-white);
+  border-radius: 24px 24px 24px 8px;
+  padding: var(--space-4) var(--space-6);
+  margin-bottom: 0;
+  
+  /* レスポンシブ対応に変更 - 横スクロール防止 */
+  max-width: min(var(--optimal-line-length), 85%);
+  width: fit-content;
+  
+  border: 1px solid var(--zen-gray-200);
+  margin-left: 0;
+  margin-right: 0;
+  animation: zen-fade-in 180ms ease-out;
+  position: relative;
+  z-index: 1;
+}
+
+.zen-message-bubble--sent {
+  background: var(--zen-gray-50);
+  color: var(--zen-gray-800);
+  border-radius: 24px 24px 8px 24px;
+  margin-left: auto;
+  margin-right: 0;
+  
+  /* 送信メッセージもレスポンシブ対応 */
+  max-width: min(var(--optimal-line-length), 85%);
+  width: fit-content;
+}
+
+.zen-message-bubble--received {
+  background: var(--zen-white);
+  color: var(--zen-gray-700);
+  border: 1px solid var(--zen-gray-200);
+  animation: zen-slide-in 200ms ease-out;
+}
+
+.zen-message-text {
+  font-size: var(--text-base);
+  font-weight: 450; /* 400 → 450 で日本語最適視認性 */
+  line-height: 1.7; /* 完璧な行間 */
+  word-wrap: break-word;
+  
+  /* 完璧な日本語＋英数字対応 */
+  word-break: keep-all; /* 日本語単語保持 */
+  overflow-wrap: break-word; /* 長い英数字のみ改行 */
+  unicode-bidi: plaintext; /* 自然な文字方向 */
+  
+  /* 英数字連続時の緊急改行 */
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+}
+
+/* 入力エリア */
+.zen-input-container {
+  margin: var(--space-2) 0;
+  padding: 0 var(--space-4);  /* 左右のパディングを追加して親コンテナと同じ余白 */
+  flex-shrink: 0;  /* サイズ変更を防止 */
+  flex-grow: 0;    /* 拡張を防止 */
+  position: relative;  /* 位置を固定 */
+  z-index: 30;     /* フェード効果より上に配置 */
+}
+
+.zen-input-wrapper {
+  width: 100%;
+}
+
+.zen-input-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.zen-input-field {
+  background: var(--zen-white);
+  border: 1px solid var(--zen-gray-300);
+  border-radius: 16px;
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-base);
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
+  color: var(--zen-gray-700);
+  resize: none;
+  min-height: 60px;
+  max-height: 120px;
+  width: 100%;
+  line-height: var(--leading-relaxed);
+  
+  /* 禅の純粋性 - スクロールバーを隠す */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.zen-input-field::-webkit-scrollbar {
+  display: none;
+}
+
+.zen-input-field:focus {
+  outline: none;
+  border-color: var(--zen-gray-400);
+  background: var(--zen-gray-25);
+  transform: scale(1.002);
+}
+
+.zen-input-field::placeholder {
+  color: var(--zen-gray-500);
+  font-weight: 300;
+}
+
+/* 集中インジケーター - 右上に移動で視線距離最短化 */
+.zen-focus-indicator {
+  position: fixed;
+  top: var(--space-4);
+  right: var(--space-4); /* left → right に変更 */
+  width: 6px;
+  height: 6px;
+  background: var(--zen-gray-400);
+  border-radius: 50%;
+  animation: zen-pulse 3s infinite;
+  margin: var(--space-2);
+  opacity: 0.7; /* やや控えめに */
+}
+
+/* 禅開始ボタン（スタート画面用） */
+.zen-start-button {
+  background: var(--zen-gray-800);
+  color: var(--zen-white);
+  border: 1px solid var(--zen-gray-800);
+  border-radius: 12px;
+  padding: var(--space-3) var(--space-8);
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* 影を排除 */
+  box-shadow: none;
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+}
+
+.zen-start-button:hover {
+  background: var(--zen-gray-700);
+  border-color: var(--zen-gray-700);
+  transform: translateY(-1px);
+  /* 影を排除 */
+  box-shadow: none;
+} 
